@@ -1,0 +1,6 @@
+bin/
+obj/
+docx_render/
+.vs/
+.docx_report_audit/
+*.csproj.user
