@@ -1,215 +1,55 @@
-# Hệ Quản Trị Cơ Sở Dữ Liệu - DBMS330284
+# Bài tập lớn Hệ Quản Trị Cơ Sở Dữ Liệu
 
-Ứng dụng **Windows Forms kết hợp SQL Server** thực hiện bài tập lớn cuối kỳ môn Hệ Quản Trị Cơ Sở Dữ Liệu. Dự án minh họa cách xây dựng và gọi **Stored Procedure**, **Scalar Function**, **Table-Valued Function**, **Trigger**, ràng buộc toàn vẹn và các truy vấn tổng hợp trên nhiều mô hình dữ liệu.
+Ứng dụng WinForms C# kết nối SQL Server để thực hiện và hiển thị kết quả các bài tập 1–8. Mỗi bài có form riêng (`FrmBai1` đến `FrmBai8`); các phép tính và truy vấn được xử lý trong SQL Server, WinForms nhận kết quả rồi trình bày.
 
-## Nội dung dự án
+## Nội dung
 
-Dự án triển khai đầy đủ 10 nhóm bài tập với một giao diện WinForms chính. Mỗi bài có màn hình riêng để:
-
-- Hiển thị yêu cầu bài toán.
-- Nhập tham số đầu vào.
-- Xem câu lệnh gọi procedure/function/trigger.
-- Thực thi truy vấn trên SQL Server.
-- Hiển thị kết quả bằng `DataGridView`.
-- Kiểm tra trigger trong transaction và tự động `ROLLBACK` để không làm thay đổi dữ liệu mẫu.
-
-## Danh sách bài tập
-
-| Bài | Nội dung | CSDL |
+| Bài | Nội dung | Cơ sở dữ liệu |
 | --- | --- | --- |
-| 1 | Stored procedure giải phương trình bậc nhất `ax + b = 0` | Thư viện |
-| 2 | Function giải phương trình bậc hai `ax² + bx + c = 0` | Thư viện |
-| 3 | Stored procedure tra cứu đầu sách và số cuốn chưa được mượn theo ISBN | Thư viện |
-| 4 | Function tính tuổi theo năm sinh | Thư viện |
-| 5 | Các stored procedure tra cứu độc giả, đầu sách, người đang mượn và quá hạn | Thư viện |
-| 6 | Trigger cập nhật tình trạng mượn/trả sách và thông báo thay đổi tựa sách | Thư viện |
-| 7 | Scalar Function, Inline TVF và Multistatement TVF quản lý đề án | Đề án |
-| 8 | Truy vấn nhóm theo dự án, phòng ban, lương và số nhân viên | Đề án |
-| 9 | Function quản lý thợ, hợp đồng, thanh toán và thời hạn sửa xe | Gara |
-| 10 | Function và trigger ràng buộc lịch thi, thời gian thi, phân công coi thi | Trường học |
+| 1 | Phương trình bậc nhất | `cuoiky_tinhtoan` |
+| 2 | Phương trình bậc hai | `cuoiky_tinhtoan` |
+| 3 | Tra cứu thông tin đầu sách | `cuoiky_thuvien` |
+| 4 | Tính tuổi từ ngày sinh | `cuoiky_tinhtoan` |
+| 5 | Tra cứu thông tin thư viện | `cuoiky_thuvien` |
+| 6 | Trigger thư viện: xóa/thêm lượt mượn, cập nhật cuốn sách, thông báo tựa sách | `cuoiky_thuvien` |
+| 7 | Hàm tính toán dữ liệu đề án | `cuoiky_dean` |
+| 8 | Thống kê tổng hợp đề án | `cuoiky_dean` |
 
-## Công nghệ sử dụng
+## Mã nguồn SQL
 
-- **C# / .NET 9**
-- **Windows Forms**
-- **Microsoft SQL Server / SQL Server LocalDB**
-- **T-SQL**
-- **Microsoft.Data.SqlClient 6.1.2**
+- `database/tinhtoan.sql`: các hàm và thủ tục cho Bài 1, 2, 4.
+- `database/01_ThuVien.sql`: các thủ tục và trigger cho Bài 3, 5, 6.
+- `database/02_DeAn.sql`: các hàm cho Bài 7, 8.
 
-## Các cơ sở dữ liệu
+Các script tạo/cập nhật đối tượng phục vụ bài tập trong những CSDL tương ứng. Cần có sẵn CSDL và các bảng nền theo đề trước khi chạy script; script bài tập không thay thế bộ cài schema/dữ liệu nền.
 
-| Database | Script | Phạm vi |
-| --- | --- | --- |
-| `CuoiKy_ThuVien` | `database/01_ThuVien.sql` | Bài 1 đến bài 6 |
-| `CuoiKy_DeAn` | `database/02_DeAn.sql` | Bài 7 và bài 8 |
-| `CuoiKy_Gara` | `database/03_Gara.sql` | Bài 9 |
-| `CuoiKy_TruongHoc` | `database/04_TruongHoc.sql` | Bài 10 |
+## Yêu cầu và chạy chương trình
 
-Các script có thể chạy lại nhiều lần. Dữ liệu mẫu được chuẩn bị để kiểm tra cả trường hợp thông thường và trường hợp biên như:
+- Windows với .NET 9 SDK.
+- SQL Server hoặc SQL Server LocalDB; máy chạy ứng dụng cần có các CSDL tương ứng.
+- Kết nối mặc định của ứng dụng: `(localdb)\MSSQLLocalDB`.
 
-- Phương trình vô nghiệm, vô số nghiệm và có nghiệm.
-- Độc giả người lớn, trẻ em và sách quá hạn.
-- Dự án có nhiều hơn hai nhân viên.
-- Hợp đồng đã nghiệm thu nhưng chưa thanh toán đủ.
-- Người thợ chưa tham gia hợp đồng.
-- Giáo viên chưa được phân công coi thi.
-- Phân công giáo viên coi chính môn mình chủ nhiệm bị trigger từ chối.
-
-## Cấu trúc thư mục
-
-```text
-cuoikycsdl/
-├── database/
-│   ├── 01_ThuVien.sql
-│   ├── 02_DeAn.sql
-│   ├── 03_Gara.sql
-│   └── 04_TruongHoc.sql
-├── CuoiKyWinForms.csproj
-├── Program.cs
-├── Db.cs
-├── MainForm.cs
-├── QueryForm.cs
-├── ExerciseMenuForm.cs
-├── Models.cs
-└── README.md
-```
-
-## Yêu cầu môi trường
-
-- Windows 10 hoặc Windows 11.
-- [.NET 9 SDK](https://dotnet.microsoft.com/download/dotnet/9.0).
-- SQL Server LocalDB, SQL Server Express hoặc SQL Server đầy đủ.
-- `sqlcmd` nếu muốn cài CSDL bằng PowerShell.
-
-Kiểm tra môi trường:
-
-```powershell
-dotnet --version
-sqllocaldb info
-sqlcmd -?
-```
-
-## Cài đặt và chạy dự án
-
-### 1. Tải mã nguồn
-
-```powershell
-git clone https://github.com/leminhhuy-ute/He-Quan-Tri-Co-So-Du-Lieu-DBMS330284.git
-cd He-Quan-Tri-Co-So-Du-Lieu-DBMS330284
-```
-
-### 2. Khởi động SQL Server LocalDB
-
-```powershell
-sqllocaldb start MSSQLLocalDB
-```
-
-Instance mặc định của ứng dụng:
-
-```text
-(localdb)\MSSQLLocalDB
-```
-
-### 3. Tạo và nạp dữ liệu cho 4 CSDL
-
-```powershell
-sqlcmd -S "(localdb)\MSSQLLocalDB" -E -b -f 65001 -i .\database\01_ThuVien.sql
-sqlcmd -S "(localdb)\MSSQLLocalDB" -E -b -f 65001 -i .\database\02_DeAn.sql
-sqlcmd -S "(localdb)\MSSQLLocalDB" -E -b -f 65001 -i .\database\03_Gara.sql
-sqlcmd -S "(localdb)\MSSQLLocalDB" -E -b -f 65001 -i .\database\04_TruongHoc.sql
-```
-
-Nếu sử dụng SQL Server Express hoặc instance khác, thay giá trị sau tham số `-S` bằng tên server tương ứng.
-
-### 4. Restore và build
+Mở PowerShell tại thư mục dự án rồi chạy:
 
 ```powershell
 dotnet restore
-dotnet build
-```
-
-### 5. Chạy ứng dụng
-
-```powershell
+dotnet build --configuration Release
 dotnet run --project .\CuoiKyWinForms.csproj
 ```
 
-Hoặc chạy bản Release:
+Trong giao diện, kiểm tra kết nối và nạp đúng CSDL cần dùng trước khi mở bài. Khi kiểm thử trigger Bài 6, thao tác được đặt trong transaction và rollback để dữ liệu gốc được giữ nguyên.
 
-```powershell
-dotnet build --configuration Release
-.\bin\Release\net9.0-windows\CuoiKyWinForms.exe
-```
-
-## Kiểm tra kết nối không cần mở giao diện
-
-Dự án có chế độ kiểm tra cả 4 CSDL bằng đúng thư viện `Microsoft.Data.SqlClient` mà WinForms sử dụng:
-
-```powershell
-dotnet .\bin\Release\net9.0-windows\CuoiKyWinForms.dll --test-connection
-```
-
-Kết quả mong đợi:
+## Cấu trúc chính
 
 ```text
-OK   (localdb)\MSSQLLocalDB / CuoiKy_ThuVien
-OK   (localdb)\MSSQLLocalDB / CuoiKy_DeAn
-OK   (localdb)\MSSQLLocalDB / CuoiKy_Gara
-OK   (localdb)\MSSQLLocalDB / CuoiKy_TruongHoc
+CuoiKyWinForms.csproj
+MainForm.cs
+FrmBai1.cs ... FrmBai8.cs
+Db.cs
+ExerciseFormBase.cs
+SqlScriptLoader.cs
+database/
+  tinhtoan.sql
+  01_ThuVien.sql
+  02_DeAn.sql
 ```
-
-Có thể kiểm tra một server khác bằng tham số `--server`:
-
-```powershell
-dotnet .\bin\Release\net9.0-windows\CuoiKyWinForms.dll `
-  --test-connection `
-  "--server=.\SQLEXPRESS"
-```
-
-## Xử lý lỗi LocalDB
-
-Nếu xuất hiện lỗi `Local Database Runtime error` hoặc `SQL Server process failed to start`, kiểm tra trạng thái instance:
-
-```powershell
-sqllocaldb info MSSQLLocalDB
-sqllocaldb start MSSQLLocalDB
-```
-
-Ứng dụng có cơ chế:
-
-1. Thử kết nối bằng server người dùng nhập.
-2. Khởi động instance LocalDB nếu đang dừng.
-3. Tự lấy named pipe của LocalDB và kết nối trực tiếp nếu tên instance bị lỗi phân giải.
-4. Thử instance dự phòng `BTWinFormsLocalDB` nếu CSDL tồn tại ở đó.
-
-Không nên tạo cùng một database trên hai LocalDB instance khi chúng dùng chung đường dẫn file `.mdf`.
-
-## Thành phần chính
-
-- `Db.cs`: tạo connection string và khai báo tên 4 CSDL.
-- `MainForm.cs`: giao diện chính, kết nối CSDL và menu 10 bài tập.
-- `ExerciseMenuForm.cs`: giao diện lựa chọn các câu nhỏ.
-- `QueryForm.cs`: nhập tham số, xem SQL và hiển thị kết quả.
-- `Program.cs`: khởi động WinForms và chế độ `--test-connection`.
-- `database/*.sql`: cấu trúc bảng, dữ liệu mẫu, function, procedure và trigger.
-
-## Kiểm tra Trigger
-
-Các chức năng thử trigger trên giao diện sử dụng mẫu:
-
-```sql
-BEGIN TRAN;
--- INSERT / UPDATE / DELETE để kiểm tra trigger
-ROLLBACK;
-```
-
-Vì vậy dữ liệu thật không bị thay đổi sau mỗi lần thử.
-
-## Tác giả
-
-**Lê Minh Huy**  
-GitHub: [leminhhuy-ute](https://github.com/leminhhuy-ute)
-
----
-
-Nếu dự án hữu ích, bạn có thể đánh dấu ⭐ repository để lưu lại.
